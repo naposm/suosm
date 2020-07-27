@@ -220,11 +220,11 @@ function getNoteBody () {
   if ($('#addressalt').val()) note += i18n.t('step2.addressaltdesc') + ': ' + $('#addressalt').val() + ' ' + $('#hnumberalt').val() + ', ' + $('#postcode').val() + ' ' + $('#city').val() + '\n';
   if (paymentIds) note += i18n.t('step2.payment') + ': ' + paymentTexts.join(',') + '\n';
   if ($('input:checked[name=delivery-check]').val() && $('#delivery').val()) {
-    note += i18n.t('step2.deliverydesc') + $('#delivery').val() + '\n';
+    note += i18n.t('step2.deliverydesc') + ": " + $('#delivery').val() + '\n';
   } else if ($('input:checked[name=delivery-check]').val() && !$('#delivery').val()) {
-    note += i18n.t('step2.deliverydesc') + i18n.t('step2.yes') + '\n';
+    note += i18n.t('step2.deliverydesc') + ": " + i18n.t('step2.yes') + '\n';
   } else if ($('#delivery-check').not(':indeterminate')) {
-    note += i18n.t('step2.deliverydesc') + i18n.t('step2.no') + '\n';
+    note += i18n.t('step2.deliverydesc') + ": " + i18n.t('step2.no') + '\n';
   }
   if ($('#delivery_description').val()) note += i18n.t('step2.delivery_descriptiondesc') + ': ' + $('#delivery_description').val() + '\n';
   if ($('input:checked[name=takeaway]').val() === 'yes') note += i18n.t('step2.takeawaydesc') + ': ' + i18n.t('step2.yes') + '\n';
@@ -272,10 +272,10 @@ $('#collect-data-done').click(function () {
     text: getNoteBody()
   };
 
-  $.post('https://api.openstreetmap.org/api/0.6/notes.json', qwarg, function (data) {
+  $.post('https://master.apis.dev.openstreetmap.org/api/0.6/notes.json', qwarg, function (data) {
     // console.log(data);
     var noteId = data.properties.id;
-    var link = 'https://openstreetmap.org/?note=' + noteId + '#map=19/' + latlon.lat + '/' + latlon.lng + '&layers=N';
+    var link = 'https://master.apis.dev.openstreetmap.org/?note=' + noteId + '#map=19/' + latlon.lat + '/' + latlon.lng + '&layers=N';
     $('#linkcoords').append('<div class="mt-3 h4"><a href="' + link + '">' + link + '</a></div>');
   });
 });
@@ -289,4 +289,10 @@ function clearFields () {
   $('#delivery-check').val('');
   $('#delivery-check').prop('indeterminate', true);
   disableDelivery();
+}
+
+function showTutorial() {
+  $('#tutorial').html('<video autoplay class="w-100" controls><source src="tutorial.mkv" type="video/mkv"><source src="tutorial.webm" type="video/webm"></video>');
+  $('#tut-button').removeClass('d-block');
+  $('#tut-button').addClass('d-none');
 }
